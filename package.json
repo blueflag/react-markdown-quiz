@@ -1,6 +1,6 @@
 {
   "name": "react-markdown-quiz",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Make quizzes from markdown files",
   "main": "./lib/index.js",
   "repository": {
