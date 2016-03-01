@@ -1,8 +1,15 @@
 {
   "name": "react-markdown-quiz",
   "version": "0.0.0",
-  "description": "",
+  "description": "Make quizzes from markdown files",
   "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:blueflag/react-markdown-quiz.git"
+  },
+  "bugs": {
+    "url": "https://github.com/blueflag/react-markdown-quiz/issues"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d lib",
