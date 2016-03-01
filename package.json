@@ -18,6 +18,7 @@
   "author": "Allan Hortle",
   "license": "ISC",
   "dependencies": {
+    "markdown": "^0.5.0",
     "yaml-front-matter": "^3.3.0"
   },
   "devDependencies": {
