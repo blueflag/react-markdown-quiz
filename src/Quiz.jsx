@@ -1,7 +1,6 @@
 import React from 'react';
 import {fromJS, Map} from 'immutable';
 import checkHash from './checkHash';
-import {SCORM} from 'pipwerks-scorm-api-wrapper';
 
 var Quiz = React.createClass({
     displayName: 'Quiz',

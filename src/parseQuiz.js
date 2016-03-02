@@ -1,5 +1,7 @@
 import {Map, List, fromJS} from 'immutable';
 import {markdown} from "markdown";
+import yamlFront from 'yaml-front-matter';
+
 import checkHash from './checkHash.js';
 const initialState = fromJS([]);
 
@@ -8,10 +10,10 @@ function renderHTML(tree) {
 }
 
 export default function (str) {
-    return fromJS(markdown.parse(str))
+    var quiz = yamlFront.loadFront(str);
+    return fromJS(markdown.parse(quiz.__content))
         .skip(1)
         .reduce((reduction, value, key, iterable) => {
-
             switch (value.get(0)) {
                 case 'header':
                     return reduction
