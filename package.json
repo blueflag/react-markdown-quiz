@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:blueflag/react-markdown-quiz.git"
+    "url": "https://github.com/blueflag/react-markdown-quiz.git"
   },
   "bugs": {
     "url": "https://github.com/blueflag/react-markdown-quiz/issues"
