@@ -1,6 +1,6 @@
 import {Map, List, fromJS} from 'immutable';
 import {markdown} from "markdown";
-import checkHash from './checkHash';
+import checkHash from './checkHash.js';
 const initialState = fromJS([]);
 
 function renderHTML(tree) {

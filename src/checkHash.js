@@ -1,6 +1,6 @@
 // NON-SECURE DERPY HASH FUNCTION
 // THIS IS NOT FOR CRYPTO. JUST HERE TO MAKE IT SLIGHTLY HARDER TO CHEAT
-export default function(str) {
+module.exports = function(str) {
     var hash = 0, i, chr, len;
     if (str.length === 0) return hash;
     for (i = 0, len = str.length; i < len; i++) {
