@@ -34,7 +34,7 @@ var Quiz = React.createClass({
         }
     },
     renderAnswers(answers, questionNumber) {
-        return answers.map((aa, key) => {
+        return answers.sort(() => .5 - Math.random()).map((aa, key) => {
             return <label key={key} style={{display:'block'}}>
                 <input name={questionNumber} type="radio" value={key} onChange={this.onChange.bind(this, aa, questionNumber)}/>
                 <span dangerouslySetInnerHTML={{__html: aa}}/>
