@@ -10,7 +10,7 @@ function renderHTML(tree) {
 }
 
 export default function (str) {
-    var quiz = yamlFront.loadFront(str);
+    var quiz = (!str.__content) ? yamlFront.loadFront(str) : str;
     return fromJS(markdown.parse(quiz.__content))
         .skip(1)
         .reduce((reduction, value, key, iterable) => {
