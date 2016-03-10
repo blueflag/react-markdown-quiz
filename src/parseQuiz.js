@@ -10,12 +10,14 @@ function renderHTML(tree) {
 }
 
 export default function (str) {
+    console.log('\n=================\n');
     var quiz = (!str.__content) ? yamlFront.loadFront(str) : str;
     return fromJS(markdown.parse(quiz.__content))
         .skip(1)
         .reduce((reduction, value, key, iterable) => {
             switch (value.get(0)) {
                 case 'header':
+                    console.log('header')
                     return reduction
                         // Create an object for each header
                         .update(vv => vv.push(fromJS({
@@ -33,15 +35,15 @@ export default function (str) {
                         .map(qq => renderHTML(qq.toJS()));
 
                     var randomAnswers = answers.reduce((rr, ii) => rr.splice(Math.floor(Math.random() * rr.size),0,ii), List());
-
                     return reduction
                         .updateIn([currentQuestion, 'markdown'], vv => vv.push('{{ANSWERS}}'))
                         .setIn([currentQuestion, 'hash'], checkHash(answers.get(0)))
                         .setIn([currentQuestion, 'answers'], randomAnswers);
 
                 default:
+                    console.log('defualt', value);
                     return reduction
-                        .updateIn([reduction.size - 1 , 'markdown'], vv => vv.push(value));
+                        .updateIn([reduction.size - 1 , 'markdown'], List(), vv => vv.push(value));
 
             }
         }, initialState)
