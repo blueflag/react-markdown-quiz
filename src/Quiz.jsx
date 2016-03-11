@@ -4,6 +4,11 @@ import checkHash from './checkHash';
 
 var Quiz = React.createClass({
     displayName: 'Quiz',
+    getDefaultProps() {
+        return {
+            classPrefix: "Quiz"  
+        };
+    },
     getInitialState() {
         return {
             answers: fromJS(this.props.quiz).map(question => {
@@ -20,6 +25,9 @@ var Quiz = React.createClass({
             })
         }
     },
+    getClassName(name) {
+        return `${this.props.classPrefix}${name}`;
+    },
     onChange(value, index) {
         this.setState({
             answers: this.state.answers
@@ -33,22 +41,22 @@ var Quiz = React.createClass({
         }
     },
     render() {
-        return <div>
+        return <div className={`${this.props.classPrefix} ${this.props.className}`}>
             {this.state.questionsWithShuffledAnswers.map(this.renderQuestion)}
         </div>
     },
     renderAnswers(answers, questionNumber) {
         return answers.map((aa, key) => {
-            return <label key={key} style={{display:'block'}}>
-                <input name={questionNumber} type="radio" value={key} onChange={this.onChange.bind(this, aa, questionNumber)}/>
-                <span dangerouslySetInnerHTML={{__html: aa}}/>
+            return <label className={`${this.getClassName('Answer')}`} key={key} style={{display:'block'}}>
+                <input className={`${this.getClassName('Answer_radio')}`} name={questionNumber} type="radio" value={key} onChange={this.onChange.bind(this, aa, questionNumber)}/>
+                <span className={`${this.getClassName('Answer_text')}`} dangerouslySetInnerHTML={{__html: aa}}/>
             </label>
         });
     },
     renderQuestion(question, key) {
         var [before, after] = question.html.split('{{ANSWERS}}');
 
-        return <div key={key}>
+        return <div key={key} className={`${this.getClassName('Question')}`}>
             <h2>{key + 1}. <span dangerouslySetInnerHTML={{__html: question.title}}/></h2>
             <div className="Markdown" dangerouslySetInnerHTML={{__html: before}}/>
             {this.renderAnswers(question.answers, key)}
