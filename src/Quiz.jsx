@@ -7,6 +7,7 @@ var Quiz = React.createClass({
     getDefaultProps() {
         return {
             classPrefix: "Quiz",
+            className: '',
             renderQuestion: this.renderQuestionContent
         };
     },
