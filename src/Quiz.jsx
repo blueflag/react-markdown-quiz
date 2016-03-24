@@ -6,7 +6,8 @@ var Quiz = React.createClass({
     displayName: 'Quiz',
     getDefaultProps() {
         return {
-            classPrefix: "Quiz"  
+            classPrefix: "Quiz",
+            renderQuestion: this.renderQuestionContent
         };
     },
     getInitialState() {
@@ -45,6 +46,28 @@ var Quiz = React.createClass({
             {this.state.questionsWithShuffledAnswers.map(this.renderQuestion)}
         </div>
     },
+    renderQuestion(question, key) {
+        var [before, after] = question.html.split('{{ANSWERS}}');
+        var questionData = question;
+        questionData.renderAnswers = this.renderAnswers.bind(this, question.answers, key);
+        questionData.content = <div>
+            <div className="Markdown" dangerouslySetInnerHTML={{__html: before}}/>
+            {this.renderAnswers(question.answers, key)}
+            <div className="Markdown" dangerouslySetInnerHTML={{__html: after}}/>
+        </div>;
+
+        return <div key={key} className={`${this.getClassName('Question')}`}>
+            {this.props.renderQuestion(questionData, key)}
+        </div>
+
+    },
+    renderQuestionContent(question, key){
+        return <div>
+            <h2>{key + 1}. <span dangerouslySetInnerHTML={{__html: question.title}}/></h2>
+            {question.content}
+            <hr/>
+        </div>;
+    }
     renderAnswers(answers, questionNumber) {
         return answers.map((aa, key) => {
             return <label className={`${this.getClassName('Answer')}`} key={key} style={{display:'block'}}>
@@ -52,17 +75,6 @@ var Quiz = React.createClass({
                 <span className={`${this.getClassName('Answer_text')}`} dangerouslySetInnerHTML={{__html: aa}}/>
             </label>
         });
-    },
-    renderQuestion(question, key) {
-        var [before, after] = question.html.split('{{ANSWERS}}');
-
-        return <div key={key} className={`${this.getClassName('Question')}`}>
-            <h2>{key + 1}. <span dangerouslySetInnerHTML={{__html: question.title}}/></h2>
-            <div className="Markdown" dangerouslySetInnerHTML={{__html: before}}/>
-            {this.renderAnswers(question.answers, key)}
-            <div className="Markdown" dangerouslySetInnerHTML={{__html: after}}/>
-            <hr/>
-        </div>
     }
 });
 
