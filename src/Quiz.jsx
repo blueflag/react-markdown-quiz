@@ -67,7 +67,7 @@ var Quiz = React.createClass({
             {question.content}
             <hr/>
         </div>;
-    }
+    },
     renderAnswers(answers, questionNumber) {
         return answers.map((aa, key) => {
             return <label className={`${this.getClassName('Answer')}`} key={key} style={{display:'block'}}>
