@@ -8,16 +8,17 @@ var Quiz = React.createClass({
         return {
             classPrefix: "Quiz",
             className: '',
-            renderQuestion: this.renderQuestionContent
+            renderQuestion: this.renderQuestionContent,
+            oldAnswer: ''
         };
     },
     getInitialState() {
         return {
-            answers: fromJS(this.props.quiz).map(question => {
+            answers: fromJS(this.props.quiz).map((question,key) => {
                 return Map({
                     title: question.get('title'),
                     hash: question.get('hash'),
-                    answer: null,
+                    answer: this.props.oldAnswer[key] || null,
                     correct: false
                 })
             }),
@@ -70,9 +71,11 @@ var Quiz = React.createClass({
         </div>;
     },
     renderAnswers(answers, questionNumber) {
+        var oldAnswer = this.props.oldAnswer;
         return answers.map((aa, key) => {
+            var checkConfirm = (oldAnswer[questionNumber] === aa) ? "checked" : null;
             return <label className={`${this.getClassName('Answer')}`} key={key} style={{display:'block'}}>
-                <input className={`${this.getClassName('Answer_radio')}`} name={questionNumber} type="radio" value={key} onChange={this.onChange.bind(this, aa, questionNumber)}/>
+                <input className={`${this.getClassName('Answer_radio')}`} name={questionNumber} type="radio" value={key} checked={checkConfirm} onChange={this.onChange.bind(this, aa, questionNumber)}/>
                 <span className={`${this.getClassName('Answer_text')}`} dangerouslySetInnerHTML={{__html: aa}}/>
             </label>
         });
