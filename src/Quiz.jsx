@@ -13,11 +13,11 @@ var Quiz = React.createClass({
     },
     getInitialState() {
         return {
-            answers: fromJS(this.props.quiz).map(question => {
+            answers: fromJS(this.props.quiz).map((question,key) => {
                 return Map({
                     title: question.get('title'),
                     hash: question.get('hash'),
-                    answer: null,
+                    answer: this.props.answers[key],
                     correct: false
                 })
             }),
@@ -71,8 +71,9 @@ var Quiz = React.createClass({
     },
     renderAnswers(answers, questionNumber) {
         return answers.map((aa, key) => {
+            var checked = (this.props.answers[questionNumber] === aa) ? "checked" : null;
             return <label className={`${this.getClassName('Answer')}`} key={key} style={{display:'block'}}>
-                <input className={`${this.getClassName('Answer_radio')}`} name={questionNumber} type="radio" value={key} onChange={this.onChange.bind(this, aa, questionNumber)}/>
+                <input className={`${this.getClassName('Answer_radio')}`} name={questionNumber} type="radio" value={key} checked={checked} onChange={this.onChange.bind(this, aa, questionNumber)}/>
                 <span className={`${this.getClassName('Answer_text')}`} dangerouslySetInnerHTML={{__html: aa}}/>
             </label>
         });
