@@ -8,8 +8,7 @@ var Quiz = React.createClass({
         return {
             classPrefix: "Quiz",
             className: '',
-            renderQuestion: this.renderQuestionContent,
-            oldAnswer: ''
+            renderQuestion: this.renderQuestionContent
         };
     },
     getInitialState() {
@@ -18,7 +17,7 @@ var Quiz = React.createClass({
                 return Map({
                     title: question.get('title'),
                     hash: question.get('hash'),
-                    answer: this.props.oldAnswer[key] || null,
+                    answer: this.props.answers[key],
                     correct: false
                 })
             }),
@@ -71,11 +70,10 @@ var Quiz = React.createClass({
         </div>;
     },
     renderAnswers(answers, questionNumber) {
-        var oldAnswer = this.props.oldAnswer;
         return answers.map((aa, key) => {
-            var checkConfirm = (oldAnswer[questionNumber] === aa) ? "checked" : null;
+            var checked = (this.props.answers[questionNumber] === aa) ? "checked" : null;
             return <label className={`${this.getClassName('Answer')}`} key={key} style={{display:'block'}}>
-                <input className={`${this.getClassName('Answer_radio')}`} name={questionNumber} type="radio" value={key} checked={checkConfirm} onChange={this.onChange.bind(this, aa, questionNumber)}/>
+                <input className={`${this.getClassName('Answer_radio')}`} name={questionNumber} type="radio" value={key} checked={checked} onChange={this.onChange.bind(this, aa, questionNumber)}/>
                 <span className={`${this.getClassName('Answer_text')}`} dangerouslySetInnerHTML={{__html: aa}}/>
             </label>
         });
