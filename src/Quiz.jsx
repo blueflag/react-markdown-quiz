@@ -1,8 +1,9 @@
 import React from 'react';
 import {fromJS, Map} from 'immutable';
 import checkHash from './checkHash';
+import createReactClass from 'create-react-class';
 
-var Quiz = React.createClass({
+var Quiz = createReactClass({
     displayName: 'Quiz',
     getDefaultProps() {
         return {
