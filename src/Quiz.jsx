@@ -14,24 +14,48 @@ class Quiz extends React.Component {
             </div>;
         }
     }
-    constructor(props) {
+    constructor(props: Object) {
         super(props);
         this.state = {
-            answers: fromJS(this.props.quiz).map((question,key) => {
-                return Map({
-                    title: question.get('title'),
-                    hash: question.get('hash'),
-                    correct: false
-                })
-            }),
-            questionsWithShuffledAnswers: this.props.quiz.map(question => {
-                question.answers = question.answers.sort(() => .5 - Math.random());
-                return question;
-            })
+            answers: null,
+            questionsWithShuffledAnswers: null
         };
     }
+    componentWillMount(){
+        this.setState(this.generateState(this.props));
+    }
+    componentWillReceiveProps(nextProps: Object) {
+        if(nextProps.quiz !== this.props.quiz) {
+            this.setState(this.generateState(nextProps));
+        }
+    }
+    generateState = (props) => ({
+        answers: fromJS(props.quiz).map((question,key) => {
+            return Map({
+                title: question.get('title'),
+                hash: question.get('hash'),
+                correct: false,
+                correctAnswer: this.renderCorrectAnswer(question.get('hash'),question.get('answers')),
+                answer: null
+            })
+        }),
+        questionsWithShuffledAnswers: props.quiz.map(question => {
+            question.answers = question.answers.sort(() => .5 - Math.random());
+            return question;
+        })
+    });
     getClassName = (name) => {
         return `${this.props.classPrefix}${name}`;
+    }
+    renderCorrectAnswer = (hash,answers) => {
+        var data = [];
+        answers.map((item,key) => {
+            var test = (checkHash(item) === hash) ? item : null;
+            if(test){
+                data.push(test);
+            }
+        })
+        return data[0]
     }
     onChange = (value, index) => {
         this.setState({
@@ -46,6 +70,9 @@ class Quiz extends React.Component {
         }
     }
     render() {
+        if(!this.state.answers){
+            return null
+        }
         return <div className={`${this.props.classPrefix} ${this.props.className}`}>
             {this.state.questionsWithShuffledAnswers.map(this.renderQuestion)}
         </div>
@@ -53,10 +80,11 @@ class Quiz extends React.Component {
     renderQuestion = (question, key) => {
         var [before, after] = question.html.split('{{ANSWERS}}');
         var questionData = question;
+        var keyAnswer = this.state.answers.getIn([key,"answer"]);
         questionData.renderAnswers = this.renderAnswers.bind(this, question.answers, key);
         questionData.content = <div>
             <div className="Markdown" dangerouslySetInnerHTML={{__html: before}}/>
-            {this.renderAnswers(question.answers, key)}
+            {this.renderAnswers(question.answers, key, keyAnswer)}
             <div className="Markdown" dangerouslySetInnerHTML={{__html: after}}/>
         </div>;
 
@@ -65,10 +93,16 @@ class Quiz extends React.Component {
         </div>
 
     }
-    renderAnswers = (answers, questionNumber) => {
+    renderAnswers = (answers, questionNumber, keyAnswer) => {
         return answers.map((aa, key) => {
             return <label className={`${this.getClassName('Answer')}`} key={key} style={{display:'block'}}>
-                <input className={`${this.getClassName('Answer_radio')}`} name={questionNumber} type="radio" value={key} onChange={this.onChange.bind(this, aa, questionNumber)}/>
+                <input
+                className={`${this.getClassName('Answer_radio')}`}
+                name={questionNumber}
+                checked={keyAnswer === aa}
+                type="radio" value={key}
+                onChange={this.onChange.bind(this, aa, questionNumber)}
+                />
                 <span className={`${this.getClassName('Answer_text')}`} dangerouslySetInnerHTML={{__html: aa}}/>
             </label>
         });
