@@ -9,7 +9,8 @@ function renderHTML(tree) {
 }
 
 export default function (str) {
-    return fromJS(markdown.parse(str.__content))
+    var quiz = str;
+    return fromJS(markdown.parse(quiz))
         .skip(1)
         .reduce((reduction, value, key, iterable) => {
             switch (value.get(0)) {
