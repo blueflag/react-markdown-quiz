@@ -13,6 +13,7 @@ export default function (str) {
     return fromJS(markdown.parse(quiz))
         .skip(1)
         .reduce((reduction, value, key, iterable) => {
+            
             switch (value.get(0)) {
                 case 'header':
                     return reduction
@@ -20,7 +21,8 @@ export default function (str) {
                         .update(vv => vv.push(fromJS({
                             title: renderHTML(value.toJS()),
                             answers: [],
-                            markdown: []
+                            markdown: [],
+                            refer: null
                         })))
 
                         .updateIn([reduction.size, 'markdown'], List(), vv => vv.push(value))
@@ -38,8 +40,18 @@ export default function (str) {
                         .setIn([currentQuestion, 'answers'], randomAnswers);
 
                 default:
-                    return reduction
-                        .updateIn([reduction.size - 1 , 'markdown'], List(), vv => vv.push(value));
+                    var referTo;
+                    value.map(aa => {
+                        referTo = aa.includes('Refer To:') ? aa : null
+                    })
+                    
+                    if(referTo){
+                        return reduction
+                            .setIn([reduction.size - 1 , 'refer'], referTo);
+                    } else {
+                        return reduction
+                            .updateIn([reduction.size - 1 , 'markdown'], List(), vv => vv.push(value));
+                    }
 
             }
         }, initialState)
