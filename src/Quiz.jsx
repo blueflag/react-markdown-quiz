@@ -31,9 +31,11 @@ class Quiz extends React.Component {
     }
     generateState = (props) => ({
         answers: fromJS(props.quiz).map((question,key) => {
+            var referTo = question.get('refer').split('Refer To: ');
             return Map({
                 title: question.get('title'),
                 hash: question.get('hash'),
+                refer: referTo[1],
                 correct: false,
                 correctAnswer: this.renderCorrectAnswer(question.get('hash'),question.get('answers')),
                 answer: null
