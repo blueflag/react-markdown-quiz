@@ -16,8 +16,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
     "preversion": "yarn run build",
-    "build": "babel src -d lib",
-    "dev": "babel src -d lib --watch",
+    "build": "yarn babel src -d lib",
+    "dev": "yarn babel src -d lib --watch",
     "watch": "yarn run build -- -w"
   },
   "author": "Allan Hortle",
