@@ -1,6 +1,6 @@
 {
   "name": "react-markdown-quiz",
-  "version": "0.7.1",
+  "version": "0.6.0",
   "description": "Make quizzes from markdown files",
   "main": "./lib/index.js",
   "files": [
@@ -15,6 +15,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
+    "prepublish": "yarn run build",
     "build": "babel src -d lib",
     "dev": "babel src -d lib --watch",
     "watch": "yarn run build -- -w"
